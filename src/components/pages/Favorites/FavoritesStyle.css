@@ -1,0 +1,7 @@
+.icon {
+  cursor: pointer;
+  position: absolute;
+}
+.text-red-500:hover {
+  fill: rgb(239 68 68 / var(--tw-text-opacity))
+}

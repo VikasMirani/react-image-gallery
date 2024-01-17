@@ -8,11 +8,11 @@ const Images = () => {
   return (
     <>
       {window.location.pathname.includes("/favorites") ? (
-        <h1 className="mt-8 font-bold text-2xl max-w-7xl mx-auto">
+        <h1 className="mt-8 font-bold text-2xl max-w-7xl mx-auto text-white">
           Favorite Images
         </h1>
       ) : (
-        <h1 className="mt-8 font-bold text-2xl max-w-7xl mx-auto">
+        <h1 className="mt-8 font-bold text-2xl max-w-7xl mx-auto text-white">
           Results for{" "}
           <span className="capitalize">{searchQuery || "Cars"}</span>
         </h1>
@@ -24,7 +24,9 @@ const Images = () => {
           ) : favoriteList && favoriteList.length ? (
             favoriteList.map((data, key) => <Image key={key} data={data} />)
           ) : (
-            <h1 className="font-bold text-2xl max-w-7xl mx-auto">No Data</h1>
+            <h1 className="font-bold text-2xl max-w-7xl mx-auto text-white">
+              No Data
+            </h1>
           )}
         </div>
       ) : (

@@ -6,11 +6,11 @@ const Image = ({ data }) => {
   const handleFavorite = () => {
     setFavoriteList(data);
   };
-
+  
   return (
     <div className="relative mb-6 before:content-[''] before:absolute before:inset-0">
       <div className="icon" onClick={handleFavorite}>
-        {data.isFav && data.isFav === true ? (
+        {(data.isFav && data.isFav === true) ? (
           <svg
             className="h-8 w-8 text-red-500"
             viewBox="0 0 24 24"

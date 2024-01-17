@@ -8,24 +8,11 @@ export const ImageProvider = ({ children }) => {
   const [isLoading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [favoriteList, setFavList] = useState([]);
-  const [bgImage, setBgImage] = useState('');
+  const [bgImage, setBgImage] = useState('https://source.unsplash.com/random/1600x900/?moon');
 
   useEffect(() => {
     loadData();
   }, []);
-
-  useEffect(() => {
-    fetchBgImage();
-  }, []);
-
-  const fetchBgImage = () => {
-    let url = "https://source.unsplash.com/1600x900/?beach";
-    imageRest.getBgImage(url).then(resp => {
-      setBgImage(resp);
-    }).catch(err => {
-      console.log(err);
-    });
-  }
 
   const loadData = (searchValue) => {
     setLoading(true);
@@ -34,7 +21,14 @@ export const ImageProvider = ({ children }) => {
     imageRest
       .fetchImages(url)
       .then((resp) => {
-        let response = resp.results ? resp.results : [];
+        let response = resp.results ? [...resp.results] : [];
+        response.forEach((el) => {
+          favoriteList.forEach(fl => {
+            if (el.id === fl.id) {
+              el.isFav = true;
+            }
+          })
+        });
         setImageList(response);
         setLoading(false);
       })
@@ -47,16 +41,22 @@ export const ImageProvider = ({ children }) => {
   const setFavoriteList = (data) => {
     let list = [...favoriteList];
     let selectedImage = imageList.find(img => img.id === data.id);
-    if (selectedImage.isFav) {
-      selectedImage.isFav = false;
-      const index = list.indexOf(selectedImage);
-      list.splice(index, 1);
-      setFavList(list);
-    } else {
-      selectedImage.isFav = true;
-      list.push(selectedImage);
-      setFavList(list);
+    if (!selectedImage) {
+      return;
     }
+      if (selectedImage.isFav) {
+        selectedImage.isFav = false;
+        list = favoriteList.filter((dl) => {
+          if (dl.id !== selectedImage.id) {
+            return dl;
+          }
+        });
+        setFavList(list);
+      } else {
+        selectedImage.isFav = true;
+        list.push(selectedImage);
+        setFavList(list);
+      }
   }
 
   return (
@@ -70,6 +70,7 @@ export const ImageProvider = ({ children }) => {
         favoriteList,
         setFavoriteList: (data) => setFavoriteList(data),
         bgImage,
+        setBgImage,
       }}
     >
       {children}
